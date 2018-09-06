@@ -39,16 +39,18 @@
         let redPX,
             redPY;
         let steps = 30;
+        let small = 50;
 
         document.addEventListener("DOMContentLoaded", init);
 
         function init() {
+            red.style.left = window.innerWidth / 2 - red.clientWidth / 2 + "px";
+            red.style.top = window.innerHeight / 2 - red.clientHeight / 2 + "px";
             document.addEventListener("mousemove", mouseMove);
             moveRAF();
         }
 
         function mouseMove(e) {
-            console.log(e.target);
             mouseX = e.pageX;
             mouseY = e.pageY;
         }
@@ -57,11 +59,11 @@
             redPX = red.offsetLeft;
             redPY = red.offsetTop;
 
-            let targX = ((window.innerWidth - mouseX) / window.innerWidth) * (window.innerWidth - red.clientWidth);
-            let targY = ((window.innerHeight - mouseY) / window.innerHeight) * (window.innerHeight - red.clientHeight);
+            redPX += ((window.innerWidth - mouseX) / window.innerWidth) * (window.innerWidth - red.clientWidth) / small;
+            redPY += ((window.innerHeight - mouseY) / window.innerHeight) * (window.innerHeight - red.clientHeight) / small;
 
-            red.style.left = (targX - redPX) * steps + "px";
-            red.style.top = (targY - redPY) * steps + "px";
+            red.style.left = redPX + "px";
+            red.style.top = redPY + "px";
             requestAnimationFrame(moveRAF);
         }
 
