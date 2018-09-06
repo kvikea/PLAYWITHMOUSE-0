@@ -38,6 +38,9 @@
             mouseY;
         let redPX,
             redPY;
+
+        let winCX,
+            winCY;
         let steps = 30;
         let small = 50;
 
@@ -59,8 +62,8 @@
             redPX = red.offsetLeft;
             redPY = red.offsetTop;
 
-            redPX += ((window.innerWidth - mouseX) / window.innerWidth) * (window.innerWidth - red.clientWidth) / small;
-            redPY += ((window.innerHeight - mouseY) / window.innerHeight) * (window.innerHeight - red.clientHeight) / small;
+            redPX += ((winCX - mouseX) / winCX) * (winCX - red.clientWidth);
+            redPY += ((winCY - mouseY) / winCY) * (winCY - red.clientHeight);
 
             red.style.left = redPX + "px";
             red.style.top = redPY + "px";

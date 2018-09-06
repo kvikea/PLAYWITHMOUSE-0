@@ -51,8 +51,8 @@
 
             //redPX = (mouseX / window.innerWidth) * (window.innerWidth - red.clientWidth);
             //redPY = (mouseY / window.innerHeight) * (window.innerHeight - red.clientHeight);
-            redPX += ((window.innerWidth - mouseX) / window.innerWidth) * (window.innerWidth - red.clientWidth) / 50;
-            redPY += ((window.innerHeight - mouseY) / window.innerHeight) * (window.innerHeight - red.clientHeight) / 50;
+            redPX = ((window.innerWidth - mouseX) / window.innerWidth) * (window.innerWidth - red.clientWidth);
+            redPY = ((window.innerHeight - mouseY) / window.innerHeight) * (window.innerHeight - red.clientHeight);
 
             red.style.left = redPX + "px";
             red.style.top = redPY + "px";
