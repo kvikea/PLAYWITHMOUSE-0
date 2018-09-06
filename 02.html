@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            background-color: papayawhip;
+        }
+
+        #red {
+            width: 20vw;
+            height: 20vw;
+            position: absolute;
+            background-color: coral;
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="red"></div>
+    <script>
+        let red = document.querySelector("#red");
+
+        document.addEventListener("DOMContentLoaded", init);
+
+        function init() {
+            document.addEventListener("mousemove", mouseMove);
+        }
+
+        function mouseMove(e) {
+            console.log(e.target);
+            red.textContent =
+                "x: " + e.pageX +
+                "\n y: " + e.pageY +
+                "\n  winH: " + window.innerHeight +
+                "\n  winW " + window.innerWidth +
+                "\n  clientH " + red.clientHeight +
+                "\n  clientW " + red.clientWidth;
+            red.style.whiteSpace = "pre";
+
+            red.style.top = e.pageY + "px";
+            red.style.left = e.pageX + "px";
+
+            if (e.pageY >= window.innerHeight - red.clientHeight) {
+                red.style.top = window.innerHeight - red.clientHeight + "px";
+            }
+            if (e.pageX >= window.innerWidth - red.clientWidth) {
+                red.style.left = window.innerWidth - red.clientWidth + "px";
+            }
+            if (e.pageY <= 0) {
+                red.style.top = 0 + "px";
+            }
+            if (e.pageX <= 0) {
+                red.style.left = 0 + "px";
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>

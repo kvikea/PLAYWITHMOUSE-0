@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            background-color: papayawhip;
+        }
+        /* #red {
+            width: 20vw;
+            height: 20vw;
+            position: absolute;
+            background-color: coral;
+            color: white;
+        }*/
+
+        #red {
+            width: calc(120vw*2);
+            height: calc(86vw*2);
+            position: absolute;
+            background-image: url(peach.gif);
+            background-size: cover;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="red"></div>
+    <script>
+        let red = document.querySelector("#red");
+        let mouseX,
+            mouseY;
+        let redPX,
+            redPY;
+
+        document.addEventListener("DOMContentLoaded", init);
+
+        function init() {
+            document.addEventListener("mousemove", mouseMove);
+        }
+
+        function mouseMove(e) {
+            mouseX = e.pageX;
+            mouseY = e.pageY;
+
+            redPX = ((window.innerWidth - mouseX) / window.innerWidth) * (window.innerWidth - red.clientWidth);
+            redPY = ((window.innerHeight - mouseY) / window.innerHeight) * (window.innerHeight - red.clientHeight);
+
+            red.style.left = redPX + "px";
+            red.style.top = redPY + "px";
+        }
+
+    </script>
+</body>
+
+</html>
