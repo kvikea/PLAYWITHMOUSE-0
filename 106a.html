@@ -19,6 +19,7 @@
         }
 
         #container {
+            position: relative;
             background: aliceblue;
             width: 100vw;
             height: 90vh;
@@ -56,18 +57,11 @@
      * https://codepen.io/hanseklund/pen/qDxvo
      */
 
-    var input = {
-        dragStartX: 0,
-        dragStartY: 0,
-        dragX: 0,
-        dragY: 0,
-        dragDX: 0,
-        dragDY: 0
-    };
+    var input = {};
     let platePX = 0;
     let platePY = 0;
-    let velocityX = 0;
-    let velocityY = 0;
+    //let velocityX = 0;
+    //let velocityY = 0;
     let containerWidth, containerHeight;
     let plateWidth, plateHeight;
     let dragging = false,
@@ -99,6 +93,7 @@
             plate.addEventListener('mousedown', onPlateMouseDown);
         }
 
+        console.log("jkkjj", plate.offsetLeft, plate.getBoundingClientRect().left);
         //onAnimationFrame();
 
     }
@@ -206,18 +201,12 @@
 
     function onAnimationFrame() {
 
-        /*if (input.dragDX !== 0) velocityX = input.dragDX;
-        if (input.dragDY !== 0) velocityY = input.dragDY;
-
-        platePX += velocityX;
-        platePY += velocityY;*/
-
         platePX = plate.offsetLeft;
         platePY = plate.offsetTop;
 
         if (dragging == true) {
-            platePX += (mouseX - x_plate) / steps;
-            platePY += (mouseY - y_plate) / steps;
+            platePX += (mouseX - plate.offsetLeft - x_plate) / steps;
+            platePY += (mouseY - plate.offsetTop - y_plate) / steps;
         }
         //restict horizontally
         if (platePX < 0) platePX = 0;
@@ -230,25 +219,22 @@
         //set the transform
         plate.style.transform = 'translate(' + platePX + 'px,' + platePY + 'px) translateZ(0) scale(1)';
 
-        /*velocityX = velocityX * 0.8;
-        velocityY = velocityY * 0.8;
-
-        input.dragDX = 0;
-        input.dragDY = 0;
-*/
         RAF = requestAnimationFrame(onAnimationFrame);
 
     }
 
     function handleDragStart(x, y) {
-        console.log("start", x, y);
         dragging = true;
 
         mouseX = x;
         mouseY = y;
         //where about is it clicked
-        x_plate = x - plate.offsetLeft;
-        y_plate = y - plate.offsetTop;
+        //x_plate = x - plate.offsetLeft;
+        //y_plate = y - plate.offsetTop;
+        x_plate = x - plate.getBoundingClientRect().left;
+        y_plate = y - plate.getBoundingClientRect().top;
+        console.log("jkkjj", plate.offsetLeft, plate.getBoundingClientRect().left);
+        //console.log("start", x, y, "x_plate", x_plate, plate.style.left);
         onAnimationFrame();
     }
 
