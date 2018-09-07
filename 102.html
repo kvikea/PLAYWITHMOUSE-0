@@ -78,7 +78,7 @@
         //where about is it clicked
         x_drag = e.clientX - drag.offsetLeft;
         y_drag = e.clientY - drag.offsetTop;
-        raf();
+        moveRAF();
     }
 
     function while_drag(e) {
@@ -86,7 +86,7 @@
         mouseY = e.clientY;
     }
 
-    function raf() {
+    function moveRAF() {
         let dragPX = drag.offsetLeft;
         let dragPY = drag.offsetTop;
 
@@ -120,7 +120,7 @@
         drag.style.left = dragPX + 'px';
         drag.style.top = dragPY + 'px';
 
-        RAF = requestAnimationFrame(raf);
+        RAF = requestAnimationFrame(moveRAF);
     }
 
     function stop_drag(e) {
