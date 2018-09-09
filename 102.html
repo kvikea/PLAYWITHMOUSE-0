@@ -17,9 +17,9 @@
         #container {
             position: relative;
             overflow: hidden;
+            background: aliceblue;
             width: 100vw;
             height: 90vh;
-            background: aliceblue;
         }
 
         .button {
@@ -34,7 +34,6 @@
 <body>
     <input type="button" id="zoomout" class="button" value="Zoom out">
     <input type="button" id="zoomin" class="button" value="Zoom in">
-    <input type="button" id="recenter" class="button" value="Recenter">
     <div id="container">
         <img id="drag" src="bw.gif" />
     </div>
@@ -44,12 +43,13 @@
 <script>
     document.addEventListener("DOMContentLoaded", init);
 
-    let drag, container, zoomin, zoomout, recenter;
+    let drag, container, zoomin, zoomout;
     let dragging = false,
         x_drag = 0,
         y_drag = 0;
-    let mouseX, mouseY;
     let RAF;
+    let mouseX, mouseY;
+    let dragPX, dragPY;
     let steps = 10;
 
     function init() {
@@ -57,65 +57,42 @@
         container = document.querySelector('#container');
 
         drag.addEventListener('mousedown', start_drag);
-        container.addEventListener('mousemove', while_drag);
-        container.addEventListener('mouseup', stop_drag);
-        container.addEventListener('mouseleave', stop_drag);
+        drag.addEventListener('mousemove', while_drag);
+        drag.addEventListener('mouseup', stop_drag);
+        drag.addEventListener('mouseleave', stop_drag);
 
-        document.getElementById('zoomout').addEventListener('click', function() {
+        document.querySelector("#zoomout").addEventListener('click', () => {
             zoom(drag, 0.5);
         });
-        document.getElementById('zoomin').addEventListener('click', function() {
+        document.querySelector("#zoomin").addEventListener('click', () => {
             zoom(drag, 1.5);
-        });
-        document.getElementById('recenter').addEventListener('click', function() {
-            center(drag);
         });
     }
 
     function start_drag(e) {
         e.preventDefault(); // to get rid og the image dragging preview
         dragging = true;
-        //where about is it clicked
-        x_drag = e.clientX - drag.offsetLeft;
-        y_drag = e.clientY - drag.offsetTop;
-        moveRAF();
-    }
 
-    function while_drag(e) {
         mouseX = e.clientX;
         mouseY = e.clientY;
+
+        //where is it clicked: mouse's distance to drag's position
+        x_drag = e.clientX - drag.offsetLeft;
+        y_drag = e.clientY - drag.offsetTop;
+
+        RAF = requestAnimationFrame(moveRAF);
+        //console.log(x_drag);
     }
 
     function moveRAF() {
-        let dragPX = drag.offsetLeft;
-        let dragPY = drag.offsetTop;
 
-        if (dragging == true) {
-            dragPX += (mouseX - drag.offsetLeft - x_drag) / steps;
-            dragPY += (mouseY - drag.offsetTop - y_drag) / steps;
-        }
+        dragPX = drag.offsetLeft;
+        dragPY = drag.offsetTop;
 
-        if ((drag.clientWidth < container.clientWidth && dragPX < 0) ||
-            (drag.clientWidth > container.clientWidth && dragPX > 0)) {
-            dragPX = 0;
-        }
-        if ((drag.clientHeight < container.clientHeight && dragPY < 0) ||
-            (drag.clientHeight > container.clientHeight && dragPY > 0)) {
-            dragPY = 0;
-        }
-        if ((drag.clientWidth < container.clientWidth &&
-                dragPX > (container.clientWidth - drag.offsetWidth)) ||
-            ((drag.clientWidth > container.clientWidth) &&
-                dragPX < (container.clientWidth - drag.offsetWidth))) {
-            dragPX = container.clientWidth - drag.offsetWidth;
+        dragPX += ((mouseX - x_drag) - dragPX) / steps;
+        dragPY += ((mouseY - y_drag) - dragPY) / steps;
 
-        }
-        if ((drag.clientHeight < container.clientHeight &&
-                dragPY > (container.clientHeight - drag.offsetHeight)) ||
-            ((drag.clientHeight > container.clientHeight) &&
-                dragPY < (container.clientHeight - drag.offsetHeight))) {
-            dragPY = container.clientHeight - drag.offsetHeight;
-        }
+        // Here we need some border restrictions
 
         drag.style.left = dragPX + 'px';
         drag.style.top = dragPY + 'px';
@@ -123,25 +100,25 @@
         RAF = requestAnimationFrame(moveRAF);
     }
 
-    function stop_drag(e) {
-        dragging = false;
-        cancelAnimationFrame(RAF);
+    function while_drag(e) {
+        if (dragging !== false) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            // console.log(drag.style.left + ' - ' + drag.style.top);
+        }
     }
 
+    function stop_drag() {
+        cancelAnimationFrame(RAF);
+        dragging = false;
+    }
+
+
     function zoom(elm, zoomincrement) {
-        var pre_width = drag.getBoundingClientRect().width,
+        let pre_width = drag.getBoundingClientRect().width,
             pre_height = drag.getBoundingClientRect().height;
         elm.style.width = (pre_width * zoomincrement) + 'px';
         elm.style.height = (pre_height * zoomincrement) + 'px';
-    }
-
-    function center(elm) {
-        let dw = drag.getBoundingClientRect().width;
-        let dh = drag.getBoundingClientRect().height;
-        let cw = container.getBoundingClientRect().width;
-        let ch = container.getBoundingClientRect().height;
-        elm.style.left = (cw / 2 - dw / 2) + 'px';
-        elm.style.top = (ch / 2 - dh / 2) + 'px';
     }
 
 </script>
