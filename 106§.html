@@ -79,8 +79,10 @@
             platePY = (containerRect.height * 0.5) - (plateRect.height / 2);
             //platePX = (container.clientWidth * 0.5) - (plate.clientWidth / 2);
             //platePY = (container.clientHeight * 0.5) - (plate.clientHeight / 2);
-            plate.style.transform = 'translate(' + platePX + 'px,' + platePY + 'px) translateZ(0) scale(1)';
-
+            //plate.style.transform = "translate(" + platePX + "px," + platePY + "px)";
+            //Translate simply doesnt work with the rects?
+            plate.style.left = platePX + "px";
+            plate.style.top = platePY + "px";
             // listeners
             if (window.PointerEvent) {
                 input.pointers = [];
@@ -95,7 +97,8 @@
         }
 
         function onAnimationFrame() {
-            //plateRect = plate.getBoundingClientRect();
+            let containerRect = container.getBoundingClientRect();
+            let plateRect = plate.getBoundingClientRect();
             platePX = plate.getBoundingClientRect().left;
             platePY = plate.getBoundingClientRect().top;
             console.log("anim", platePX, platePY);
@@ -103,18 +106,18 @@
             platePX += (mouseX - platePX - x_plate) / steps;
             platePY += (mouseY - platePY - y_plate) / steps;
 
-            /*
-                    //restict horizontally
-                    if (platePX < 0) platePX = 0;
-                    else if (platePX > containerRect.width - plateRect.width) platePX = containerRect.width - plateRect.width;
+            //restict horizontally
+            if (platePX < 0) platePX = 0;
+            else if (platePX > containerRect.width - plateRect.width) platePX = containerRect.width - plateRect.width;
 
-                    //restict vertically
-                    if (platePY < 0) platePY = 0;
-                    else if (platePY > containerRect.height - plateRect.height) platePY = containerRect.height - plateRect.height;
-            */
+            //restict vertically
+            if (platePY < 0) platePY = 0;
+            else if (platePY > containerRect.height - plateRect.height) platePY = containerRect.height - plateRect.height;
+
             //set the transform
-            plate.style.transform = 'translate(' + platePX + 'px,' + platePY + 'px) translateZ(0)  scale(1)';
-
+            //plate.style.transform = 'translate(' + platePX + 'px,' + platePY + 'px) translateZ(0)  scale(1)';
+            plate.style.left = platePX + "px";
+            plate.style.top = platePY + "px";
             RAF = requestAnimationFrame(onAnimationFrame);
 
         }
