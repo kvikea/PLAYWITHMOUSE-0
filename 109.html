@@ -88,13 +88,10 @@
             plate.style.left = platePX + "px";
             plate.style.top = platePY + "px";
 
-            //snapX = target1.offsetLeft + ((target1.clientWidth - plate.clientWidth) / 2);
-            //snapY = target1.offsetTop + ((target1.clientHeight - plate.clientHeight) / 2);
             snapX = target1.offsetLeft + (target1.offsetWidth / 2) - (plate.offsetWidth / 2);
             snapY = target1.offsetTop + (target1.offsetHeight / 2) - (plate.offsetHeight / 2);
 
             // listeners
-
             plate.addEventListener('touchstart', onTouchStart);
             plate.addEventListener('mousedown', onPlateMouseDown);
         }
@@ -160,11 +157,11 @@
                     target.style.borderStyle = "dotted";
                     if (target == targets[0]) {
                         handleDragStop();
-                        plate.style.transform = 'translate(' + snapX + 'px,' + snapY + 'px) translateZ(0) scale(1)';
                         plate.style.transition = "background 1s";
                         plate.style.background = "tomato";
-                        //plate.style.left = snapX + "px";
-                        //plate.style.top = snapY + "px";
+                        plate.style.left = snapX + "px";
+                        plate.style.top = snapY + "px";
+                        // plate.style.transform = 'translate(' + snapX + 'px,' + snapY + 'px) translateZ(0) scale(1)';
                         plate.removeEventListener('touchstart', onTouchStart);
                         plate.removeEventListener('mousedown', onPlateMouseDown);
                     }
